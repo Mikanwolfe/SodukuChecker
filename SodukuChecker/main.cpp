@@ -4,22 +4,100 @@
 
 using namespace std;
 
-bool checkBoard(int lBoard[9][9]) {
-
-
-	return false;
-}
-
 bool checkRow(int lBoard[9][9], int rowIndex) {
-	return false;
+	int rowArray[9] = { 0 };
+	int element = 0;
+	bool isGood = true;
+
+	for (int i = 0; i < 9; i++) {
+		element = lBoard[rowIndex][i];
+		if (element != 0) {
+			rowArray[element-1]++;
+			if (rowArray[element - 1] > 1) {
+				isGood = false;
+				cout << "Faulty row element found at: (Row,Column)" << i + 1  << ", " << rowIndex + 1 << endl;
+			}
+		}
+	}
+	return isGood;
 }
 
 bool checkColumn(int lBoard[9][9], int columnIndex) {
-	return false;
+	int columnArray[9] = { 0 };
+	int element = 0;
+	bool isGood = true;
+
+	for (int i = 0; i < 9; i++) {
+		element = lBoard[i][columnIndex];
+		if (element != 0) {
+			columnArray[element - 1]++;
+			if (columnArray[element - 1] > 1) {
+				isGood = false;
+				cout << "Faulty column element found at: (Row,Column)" << i + 1 << ", "<< columnIndex + 1 <<  endl;
+			}
+		}
+	}
+	return isGood;
 }
 
 bool checkSquare(int lBoard[9][9], int squareIndex) {
-	return false;
+	int squareArray[9] = { 0 };
+	int element = 0, xPos = 0, yPos = 0, i = 0, j = 0;
+	bool isGood = true;
+	/* Indexing:| 
+	i = -> j =  v
+
+	012
+	345
+	678
+	
+	therefore for the full square:
+	012 | 345 | 678
+
+	*/
+	i = squareIndex % 3;
+	j = (int)(squareIndex / 3);
+	//cout << "ij:" << i << j << endl;
+	for (int k = 0; k < 9; k++) {
+
+		xPos = i * 3 + (k % 3);
+		yPos = j * 3 + (int)(k / 3);
+		//cout << "xpos:" << xPos << "ypos: " << yPos << endl;
+		element = lBoard[yPos][xPos];
+		if (element != 0) {
+			squareArray[element - 1]++;
+			if (squareArray[element - 1] > 1) {
+				isGood = false;
+				cout << "Faulty square element found at: (Row,Column)" << xPos + 1 << ", " << yPos + 1 << endl;
+			}
+		}
+			
+	}
+	return isGood;
+}
+
+bool checkBoard(int lBoard[9][9]) {
+	//returns 'true' if board is good
+	int i = 0;
+	bool isGood = true;
+	i = 0;
+	while (i < 9 && isGood) {
+		isGood = checkRow(lBoard, i);
+		i++;
+	}
+
+	i = 0;
+	while (i < 9 && isGood) {
+		isGood = checkColumn(lBoard, i);
+		i++;
+	}
+
+	i = 0;
+	while (i < 9 && isGood) {
+		isGood = checkSquare(lBoard, i);
+		i++;
+	}
+	return isGood;
 }
 
 int main() {
