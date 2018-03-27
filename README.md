@@ -4,7 +4,7 @@ Checks a given 9x9 Int array to see if it is in a correct sudoku config. TSD Wee
 The includingPrinter branch includes the week 3 tutorial task: printing the sudoku board.
 This branch contains not only that code, but very crude manipulations to display the incorrect elemement.
 
-Example output of the including printer branch, with an error (because no errors are boring):
+Example output of the including printer branch, with an error (because no errors are boring):\
 Check the raw .md for a better view of the output.
 
 `-------------------------------------`\
