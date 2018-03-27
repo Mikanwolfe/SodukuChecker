@@ -1,8 +1,74 @@
 //Sudoku Checker
 
 #include <iostream>
+#include <cctype>
+#include <string>
 
 using namespace std;
+
+void printDashedLine() {
+	cout << "-------------------------------------" << endl;
+}
+
+void printBoard(int lBoard[9][9]) {
+	for (int i = 0; i < 9; i++) {
+		printDashedLine();
+
+		for (int j = 0; j < 9; j++) {
+			cout << "| ";
+			if (lBoard[i][j] == 0) {
+				cout << " ";
+			}
+			else {
+				cout << lBoard[i][j];
+			}
+			cout << " ";
+		}
+		cout << "|" << endl;
+	}
+	printDashedLine();
+}
+
+void printBoardWithFault(int lBoard[9][9], int row, int column) {
+	for (int i = 0; i < 9; i++) {
+		printDashedLine();
+
+		for (int j = 0; j < 9; j++) {
+			if (i == row && j == column) {
+				cout << "> ";
+				if (lBoard[i][j] == 0) {
+					cout << " ";
+				}
+				else {
+					cout << lBoard[i][j];
+				}
+				cout << " ";
+			}
+			else {
+				if (i == row && j-1 == column) {
+					cout << "< ";
+				}
+				else {
+					cout << "| ";
+				}
+				if (lBoard[i][j] == 0) {
+					cout << " ";
+				}
+				else {
+					cout << lBoard[i][j];
+				}
+				cout << " ";
+			}
+		}
+		if (i == row && column == 8) {
+			cout << "<" << endl;
+		}
+		else {
+			cout << "|" << endl;
+		}
+	}
+	printDashedLine();
+}
 
 bool checkRow(int lBoard[9][9], int rowIndex) {
 	int rowArray[9] = { 0 };
@@ -15,7 +81,9 @@ bool checkRow(int lBoard[9][9], int rowIndex) {
 			rowArray[element-1]++;
 			if (rowArray[element - 1] > 1) {
 				isGood = false;
+				printBoardWithFault(lBoard, i, rowIndex);
 				cout << "Faulty row element found at: (Row,Column)" << i + 1  << ", " << rowIndex + 1 << endl;
+				cout << "Element in question: " << element << endl;
 			}
 		}
 	}
@@ -33,7 +101,9 @@ bool checkColumn(int lBoard[9][9], int columnIndex) {
 			columnArray[element - 1]++;
 			if (columnArray[element - 1] > 1) {
 				isGood = false;
+				printBoardWithFault(lBoard, i, columnIndex);
 				cout << "Faulty column element found at: (Row,Column)" << i + 1 << ", "<< columnIndex + 1 <<  endl;
+				cout << "Element in question: " << element << endl;
 			}
 		}
 	}
@@ -68,7 +138,9 @@ bool checkSquare(int lBoard[9][9], int squareIndex) {
 			squareArray[element - 1]++;
 			if (squareArray[element - 1] > 1) {
 				isGood = false;
+				printBoardWithFault(lBoard, yPos, xPos);
 				cout << "Faulty square element found at: (Row,Column)" << xPos + 1 << ", " << yPos + 1 << endl;
+				cout << "Element in question: " << element << endl;
 			}
 		}
 			
@@ -96,6 +168,9 @@ bool checkBoard(int lBoard[9][9]) {
 	while (i < 9 && isGood) {
 		isGood = checkSquare(lBoard, i);
 		i++;
+	}
+	if (isGood) {
+		printBoard(lBoard);
 	}
 	return isGood;
 }
